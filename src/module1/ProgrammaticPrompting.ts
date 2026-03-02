@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Module 1: Programmatic Prompting
  *
  * This is the simplest possible interaction with an LLM - sending a prompt
@@ -19,37 +19,37 @@ import { Message, LLM } from '../shared';
  * Demonstrates basic LLM prompting without any agent features.
  */
 async function basicPrompting(): Promise<void> {
-  console.log('='.repeat(60));
-  console.log('Module 1: Programmatic Prompting');
-  console.log('='.repeat(60));
+  // console.log('='.repeat(60));
+  // console.log('Module 1: Programmatic Prompting');
+  // console.log('='.repeat(60));
 
   const llm = new LLM();
 
-  // Example 1: Simple completion
-  console.log('\n📝 Example 1: Simple Completion\n');
+  // // Example 1: Simple completion
+  // console.log('\n📝 Example 1: Simple Completion\n');
 
-  const messages = [
-    Message.system('You are a helpful assistant that gives concise answers.'),
-    Message.user('What is TypeScript in one sentence?'),
-  ];
+  // const messages = [
+  //   Message.system('You are a helpful assistant that gives concise answers.'),
+  //   Message.user('What is TypeScript in one sentence?'),
+  // ];
 
-  const response = await llm.generate(messages);
-  console.log('Response:', response);
+  // const response = await llm.generate(messages);
+  // console.log('Response:', response);
 
-  // Example 2: Code generation
-  console.log('\n📝 Example 2: Code Generation\n');
+  // // Example 2: Code generation
+  // console.log('\n📝 Example 2: Code Generation\n');
 
-  const codeMessages = [
-    Message.system(
-      'You are a TypeScript expert. Write clean, well-typed code. ' +
-      'Only output the code, no explanations.'
-    ),
-    Message.user('Write a function that checks if a string is a palindrome.'),
-  ];
+  // const codeMessages = [
+  //   Message.system(
+  //     'You are a TypeScript expert. Write clean, well-typed code. ' +
+  //     'Only output the code, no explanations.'
+  //   ),
+  //   Message.user('Write a function that checks if a string is a palindrome.'),
+  // ];
 
-  const codeResponse = await llm.generate(codeMessages);
-  console.log('Generated code:\n');
-  console.log(codeResponse);
+  // const codeResponse = await llm.generate(codeMessages);
+  // console.log('Generated code:\n');
+  // console.log(codeResponse);
 
   // Example 3: Structured output
   console.log('\n📝 Example 3: Structured Output (JSON)\n');
@@ -117,17 +117,37 @@ async function systemPromptVariations(): Promise<void> {
   }
 }
 
+
+async function base64Prompting(): Promise<void> {
+  console.log('='.repeat(60));
+  console.log('Base64 Encoding Prompt'); 
+  const llm = new LLM();
+
+  // Example 1: Simple completion
+  console.log('\n📝 Example 1: Simple Completion\n');
+
+  const messages = [
+    Message.system('你是一个base64编码器。将用户输入的文本转换为base64格式输出。'),
+    Message.user ('今天的天气怎么样？'),
+  ];
+
+  const response = await llm.generate(messages);
+  console.log('Response:', response);
+
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Entry Point
 // ─────────────────────────────────────────────────────────────────────────────
+
 
 async function main(): Promise<void> {
   loadEnv();
 
   try {
     await basicPrompting();
-    await systemPromptVariations();
-
+    // await systemPromptVariations();
+    // await base64Prompting();
     console.log('\n✅ Programmatic prompting examples completed!');
   } catch (error) {
     console.error('Error:', error);
@@ -140,4 +160,4 @@ if (require.main === module) {
   main();
 }
 
-export { basicPrompting, systemPromptVariations };
+export { basicPrompting, systemPromptVariations, base64Prompting };

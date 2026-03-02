@@ -77,17 +77,20 @@ export class LLM {
   private readonly debug: boolean;
 
   constructor(config: LLMConfig = {}) {
-    const apiKey = config.apiKey ?? process.env.OPENAI_API_KEY;
+    const apiKey = config.apiKey ?? process.env.DASHSCOPE_API_KEY ?? process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
       throw new Error(
-        'OpenAI API key is required. Set OPENAI_API_KEY environment variable or pass apiKey in config.\n' +
+        'API key is required. Set DASHSCOPE_API_KEY (recommended) or OPENAI_API_KEY, or pass apiKey in config.\n' +
         'Tip: Copy .env.example to .env and add your API key.'
       );
     }
 
-    this.client = new OpenAI({ apiKey });
-    this.model = config.model ?? process.env.OPENAI_MODEL ?? 'gpt-5-nano';
+    this.client = new OpenAI({
+      apiKey,
+      baseURL: process.env.LLM_BASE_URL ?? process.env.OPENAI_BASE_URL ?? 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    });
+    this.model = config.model ?? process.env.QWEN_MODEL ?? process.env.OPENAI_MODEL ?? 'qwen-turbo';
     this.maxTokens = config.maxTokens ?? 4096;
     this.debug = config.debug ?? process.env.DEBUG === 'true';
   }
@@ -145,7 +148,7 @@ export class LLM {
     const completion = await this.client.chat.completions.create({
       model: this.model,
       messages,
-      max_completion_tokens: this.maxTokens,
+      max_tokens: this.maxTokens,
     });
 
     const message = completion.choices[0]?.message;
@@ -177,7 +180,7 @@ export class LLM {
     const completion = await this.client.chat.completions.create({
       model: this.model,
       messages,
-      max_completion_tokens: this.maxTokens,
+      max_tokens: this.maxTokens,
       tools: openaiTools,
     });
 
