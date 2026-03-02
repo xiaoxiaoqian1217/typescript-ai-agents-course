@@ -108,3 +108,4 @@ npm run test:coverage
 
 - Node.js 18+
 - OpenAI API key
+- test commit
